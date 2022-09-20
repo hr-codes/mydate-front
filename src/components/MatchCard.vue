@@ -1,44 +1,40 @@
 <template>
   <div v-if="render">
-    <div v-for="(person, index) in data" :key="index">
-      <Transition>
-        <div
-          v-if="index === matchesState.getStep"
-          class="match-card bg-white p-2 rounded-3 shadow"
-        >
-          <div class="w-100 h-100 overflow-hidden rounded-2 position-relative">
-            <img :src="person.picture.large" alt="" class="w-100 rounded-2" />
+    <div class="match-card bg-white p-2 rounded-3 shadow">
+      <div
+        v-if="matchesState.matches.people[0]"
+        class="w-100 h-100 overflow-hidden rounded-2 position-relative"
+      >
+        <img
+          :src="matchesState.matches.people[0].picture.large"
+          alt=""
+          class="w-100 rounded-2"
+        />
 
-            <div class="match-info ps-4 pt-5">
-              <h2 class="text-white fw-bold pt-3">
-                {{ person.name.first }} {{ person.name.last }}
-              </h2>
+        <div class="match-info ps-4 pt-5">
+          <h2 class="text-white fw-bold pt-3">
+            {{ matchesState.matches.people[0].name.first }}
+            {{ matchesState.matches.people[0].name.last }}
+          </h2>
 
-              <h5 class="text-white">
-                {{ person.dob.age }} anos,
-                {{ person.location.country }}
-                ({{ person.location.city }})
-              </h5>
-            </div>
-          </div>
+          <h5 class="text-white">
+            {{ matchesState.matches.people[0].dob.age }} anos,
+            {{ matchesState.matches.people[0].location.country }}
+            ({{ matchesState.matches.people[0].location.city }})
+          </h5>
         </div>
-      </Transition>
+      </div>
+
+      <MyDateLoading v-else />
     </div>
   </div>
 
-  <div v-else class="match-card bg-white p-2 rounded-3 shadow">
-    <div
-      class="w-100 h-100 overflow-hidden rounded-2 position-relative d-flex align-items-center justify-content-center"
-    >
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  </div>
+  <MyDateLoading v-else />
 </template>
 
 <script>
 import { matchesStore } from "@/stores/matches";
+import MyDateLoading from "./MyDateLoading.vue";
 
 export default {
   inject: ["$http"],
@@ -49,17 +45,13 @@ export default {
   },
   data() {
     return {
-      data: [],
       render: false,
     };
   },
   watch: {
-    "matchesState.step": {
+    "matchesState.matches.people": {
       handler(value) {
-        if (
-          value ===
-          this.matchesState.fetchCount - this.matchesState.searchRemains
-        ) {
+        if (value.length === this.matchesState.searchRemains) {
           this.getCrush();
         }
       },
@@ -70,19 +62,18 @@ export default {
     async getCrush() {
       await this.$http
         .get(
-          `https://randomuser.me/api/?gender=${this.matchesState.searchGender}&inc=gender,name,location,picture,dob&results=${this.matchesState.results}`
+          `https://randomuser.me/api/?gender=${this.matchesState.searchGender}&inc=login,gender,name,location,picture,dob&results=${this.matchesState.results}`
         )
         .then((res) => {
           this.matchesState.fetchCount += res.data.info.results;
-
-          if (this.data.length) {
-            this.data = [...this.data, ...res.data.results];
-
+          if (this.matchesState.matches.people.length) {
+            this.matchesState.matches.people = [
+              ...this.matchesState.matches.people,
+              ...res.data.results,
+            ];
             return;
           }
-
-          this.data = res.data.results;
-
+          this.matchesState.matches.people = res.data.results;
           this.render = true;
         });
     },
@@ -90,6 +81,7 @@ export default {
   async created() {
     await this.getCrush();
   },
+  components: { MyDateLoading },
 };
 </script>
 

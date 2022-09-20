@@ -6,20 +6,78 @@ export const matchesStore = defineStore("matches_store", {
     fetchCount: 0,
     searchGender: "female",
     searchRemains: 5,
-    step: 0,
-    star: 5,
-    boost: 9,
-    undo: 3,
-    actions: -1,
-  }),
-  getters: {
-    getStep() {
-      return this.step;
+    love: 7,
+    messages: 3,
+    undoActions: 6,
+    actions: 0,
+    maxActions: -1,
+    matches: {
+      people: [],
+      previous: [],
+      previousActions: {},
     },
-  },
+    config: {
+      actions: {
+        0: "dislike",
+        1: "like",
+        2: "love",
+        3: "undo",
+        4: "message",
+      },
+      actionsLabel: {
+        dislike: 0,
+        like: 1,
+        love: 2,
+        undo: 3,
+        message: 4,
+      },
+    },
+  }),
+  getters: {},
   actions: {
-    setStep(payload) {
-      this.step = payload;
+    next(actionType, withoutPrevious = false) {
+      this.actions++;
+
+      const person = this.matches.people.shift();
+
+      if (withoutPrevious) {
+        return;
+      }
+
+      this.addPreviousPeople(person, actionType);
+    },
+    addPreviousPeople(person, type) {
+      this.matches.previousActions[person.login.uuid] = type;
+
+      this.matches.previous.push(person);
+    },
+    undo() {
+      if (!this.matches.previous.length || !this.undoActions) {
+        return;
+      }
+
+      if (this.actions >= this.maxActions && this.maxActions !== -1) {
+        return;
+      }
+
+      const person = this.matches.previous.pop();
+
+      if (
+        this.matches.previousActions[person.login.uuid] ===
+        this.config.actionsLabel.love
+      ) {
+        this.love++;
+
+        this.maxActions--;
+
+        this.actions--;
+      }
+
+      delete this.matches.previousActions[person.login.uuid];
+
+      this.matches.people.unshift(person);
+
+      this.undoActions--;
     },
   },
 });
