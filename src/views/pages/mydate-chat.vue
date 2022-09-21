@@ -10,7 +10,7 @@
           </div>
 
           <div class="col py-2 px-0">
-            <h5 class="m-0">Carla Marques</h5>
+            <h5 class="m-0">Gina Weasley</h5>
 
             <p class="mt-1 mb-0 text-secondary small">
               hahaha, pior que é verdade!
@@ -26,7 +26,7 @@
           </div>
 
           <div class="col py-2 px-0">
-            <h5 class="m-0">Ivy Marques Rodrigues</h5>
+            <h5 class="m-0">Mary Doe</h5>
 
             <p class="mt-1 mb-0 text-secondary small">
               Boa noite! Até amanhã...
