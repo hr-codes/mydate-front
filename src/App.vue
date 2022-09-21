@@ -10,4 +10,8 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(230, 0, 86, 0.25) !important;
+}
 </style>

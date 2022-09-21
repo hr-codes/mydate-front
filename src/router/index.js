@@ -6,27 +6,30 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
+      component: () => import("@/layouts/layout-default.vue"),
+      redirect: {
+        name: "matches",
+      },
       children: [
         {
-          path: "/",
-          component: () => import("@/layouts/layout-default.vue"),
-          children: [
-            {
-              path: "matches",
-              name: "matches",
-              component: () => import("@/views/pages/mydate-matches.vue"),
-            },
-          ],
+          path: "matches",
+          name: "matches",
+          component: () => import("@/views/pages/mydate-matches.vue"),
         },
         {
-          path: "auth",
-          component: () => import("@/layouts/layout-login.vue"),
-          children: [
-            {
-              path: "sign-in",
-              component: () => import("@/views/auth/sign-in.vue"),
-            },
-          ],
+          path: "chat",
+          name: "chat",
+          component: () => import("@/views/pages/mydate-chat.vue"),
+        },
+      ],
+    },
+    {
+      path: "/auth",
+      component: () => import("@/layouts/layout-login.vue"),
+      children: [
+        {
+          path: "sign-in",
+          component: () => import("@/views/auth/sign-in.vue"),
         },
       ],
     },

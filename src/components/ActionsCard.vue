@@ -1,28 +1,34 @@
 <template>
   <div id="match-actions" class="row my-0 mt-4 pt-2 mb-5 mx-auto">
-    <div class="btn rounded shadow-sm col m-auto p-2 undo" @click="up">
-      <span class="counter shadow-sm">{{ matchesState.undo }}</span>
+    <div class="btn rounded shadow-sm col m-auto p-2 undo" @click="undo">
+      <span class="counter shadow-sm">{{ matchesState.undoActions }}</span>
 
       <img src="@/assets/icons/undo.png" alt="" />
     </div>
 
-    <div class="btn rounded shadow-sm col m-auto p-2 ms-3 dislike" @click="up">
+    <div
+      class="btn rounded shadow-sm col m-auto p-2 ms-3 dislike"
+      @click="action(matchesState.config.actionsLabel.dislike)"
+    >
       <img src="@/assets/icons/dislike.png" alt="" />
     </div>
 
-    <div class="btn rounded shadow-sm col-3 m-auto mx-3 p-2 love" @click="star">
-      <span class="counter shadow-sm">{{ matchesState.star }}</span>
-      <img src="@/assets/icons/love.png" alt="" />
+    <div class="btn rounded shadow-sm col-3 m-auto mx-3 p-2 love" @click="love">
+      <span class="counter shadow-sm">{{ matchesState.love }}</span>
+      <img src="@/assets/icons/match.png" alt="" />
     </div>
 
-    <div class="btn rounded shadow-sm col m-auto p-2 me-3 like" @click="up">
+    <div
+      class="btn rounded shadow-sm col m-auto p-2 me-3 like"
+      @click="action(matchesState.config.actionsLabel.like)"
+    >
       <img src="@/assets/icons/like.png" alt="" />
     </div>
 
-    <div class="btn rounded shadow-sm col m-auto p-2 boost" @click="up">
-      <span class="counter shadow-sm">{{ matchesState.boost }}</span>
+    <div class="btn rounded shadow-sm col m-auto p-2 messages" @click="message">
+      <span class="counter shadow-sm">{{ matchesState.messages }}</span>
 
-      <img src="@/assets/icons/boost.png" alt="" />
+      <img src="@/assets/icons/message.png" alt="" />
     </div>
   </div>
 </template>
@@ -37,28 +43,34 @@ export default {
     return { matchesState };
   },
   methods: {
-    up() {
+    action(actionType) {
       if (
-        this.matchesState.actions !== -1 &&
-        this.matchesState.getStep >= this.matchesState.actions
+        this.matchesState.maxActions !== -1 &&
+        this.matchesState.actions >= this.matchesState.maxActions
       ) {
         return;
       }
 
-      this.matchesState.setStep(this.matchesState.getStep + 1);
+      this.matchesState.next(actionType);
     },
-    star() {
-      if (this.matchesState.star <= 0) {
+    love() {
+      if (this.matchesState.love <= 0) {
         return;
       }
 
-      this.matchesState.setStep(this.matchesState.getStep + 1);
+      this.matchesState.next(2);
 
-      this.matchesState.star -= 1;
+      this.matchesState.love -= 1;
 
-      if (this.matchesState.actions !== -1) {
-        this.matchesState.actions += 1;
+      if (this.matchesState.maxActions !== -1) {
+        this.matchesState.maxActions += 1;
       }
+    },
+    undo() {
+      this.matchesState.undo();
+    },
+    message() {
+      this.$emit("message-modal");
     },
   },
 };
@@ -70,8 +82,6 @@ export default {
 #match-actions {
   width: 350px;
   height: 110px;
-  position: fixed;
-  transform: translateX(-170px) translateY(200px);
 
   .btn {
     background-color: #fff;
@@ -93,12 +103,13 @@ export default {
   }
 
   .love {
-    background-color: rgb(255, 189, 47);
+    background-color: $second-color;
+
     transition: all 200ms ease;
 
     .counter {
       transform: translateX(18px) translateY(62px);
-      color: rgb(255, 189, 47);
+      color: $second-color;
     }
 
     img {
@@ -120,7 +131,7 @@ export default {
   }
 
   .undo,
-  .boost {
+  .messages {
     img {
       width: 20px;
     }
@@ -129,20 +140,20 @@ export default {
   .undo {
     .counter {
       transform: translateX(0px) translateY(26px);
-      color: rgb(247, 127, 72);
+      color: $fifth-color;
       width: 20px;
       height: 20px;
       font-size: 0.85rem;
     }
 
     &:hover {
-      background-color: rgb(247, 127, 72);
+      background-color: $fifth-color;
     }
   }
 
   .dislike {
     &:hover {
-      background-color: $second-color;
+      background-color: $sixth-color;
     }
   }
 
@@ -152,17 +163,17 @@ export default {
     }
   }
 
-  .boost {
+  .messages {
     .counter {
       transform: translateX(0px) translateY(26px);
-      color: rgb(103, 131, 221);
+      color: $seventh-color;
       width: 20px;
       height: 20px;
       font-size: 0.85rem;
     }
 
     &:hover {
-      background-color: rgb(103, 131, 221);
+      background-color: $seventh-color;
     }
   }
 }

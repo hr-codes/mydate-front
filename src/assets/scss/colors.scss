@@ -1,4 +1,17 @@
 $first-color: #FE9677;
 $second-color: #F64668;
 $third-color: #00b998;
-$fourth-color: #73c9b9
+$fourth-color: #73c9b9;
+$fifth-color: rgb(247, 127, 72);
+$sixth-color: rgb(255, 189, 47);
+$seventh-color: rgb(103, 131, 221);
+
+.my-date-button-blue {
+  color: #fff;
+  background-color: $seventh-color;
+
+  &:hover {
+    color: #fff !important;
+    background-color: darken($seventh-color, 20%) !important;
+  }
+}
