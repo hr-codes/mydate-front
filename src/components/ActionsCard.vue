@@ -82,8 +82,6 @@ export default {
 #match-actions {
   width: 350px;
   height: 110px;
-  position: fixed;
-  transform: translateX(-170px) translateY(200px);
 
   .btn {
     background-color: #fff;

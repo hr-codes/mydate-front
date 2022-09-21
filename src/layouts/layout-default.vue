@@ -8,17 +8,29 @@
 
     <div
       id="bottombar"
-      class="mt-auto mx-auto shadow rounded-top row m-0 overflow-hidden"
+      class="mt-auto mx-auto shadow rounded-top row m-0 mb-0 overflow-hidden"
     >
-      <button class="col btn link active">
+      <router-link
+        :to="{
+          name: 'matches',
+        }"
+        class="col btn link"
+        :class="[$route.name === 'matches' ? 'active' : '']"
+      >
         <img src="@/assets/icons/world.png" alt="" />
         <h6 class="small text-dark mb-0 pt-1">World</h6>
-      </button>
+      </router-link>
 
-      <button class="col btn link">
+      <router-link
+        :to="{
+          name: 'chat',
+        }"
+        class="col btn link"
+        :class="[$route.name === 'chat' ? 'active' : '']"
+      >
         <img src="@/assets/icons/chat.png" alt="" />
         <h6 class="small text-dark mb-0 pt-1">Chat</h6>
-      </button>
+      </router-link>
 
       <button class="col btn link">
         <img src="@/assets/icons/match.png" alt="" />

@@ -7,7 +7,7 @@
 
       <MyDateModal
         modalId="message-modal"
-        modalSize="modal-md"
+        modalSize="none"
         title="Deixe uma mensagem"
       >
         <div class="p-2">

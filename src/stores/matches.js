@@ -68,7 +68,9 @@ export const matchesStore = defineStore("matches_store", {
       ) {
         this.love++;
 
-        this.maxActions--;
+        if (this.maxActions !== -1) {
+          this.maxActions--;
+        }
 
         this.actions--;
       }

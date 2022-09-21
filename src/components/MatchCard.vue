@@ -86,15 +86,12 @@ export default {
 </script>
 
 <style lang="scss">
-$width: 390px;
+$width: 380px;
 $height: 530px;
 
 .match-card {
   width: $width;
   height: $height;
-  position: absolute;
-  transform: translateX(-190px) translateY(-340px);
-
   img {
     height: $height - 15px;
   }
@@ -111,30 +108,5 @@ $height: 530px;
     transform: translateY(-180px);
     width: $width - 16px;
   }
-}
-
-.v-enter-active {
-  transform: translateX(900px) translateY(-340px);
-  transition: all 700ms linear;
-  opacity: 0;
-}
-
-.v-enter-to {
-  transform: translateX(0px) translateY(-340px);
-  transition: all 700ms linear;
-  opacity: 1;
-}
-
-.v-leave-from {
-  transform: translateX(0px) translateY(-340px);
-
-  transition: all 700ms linear;
-  opacity: 1;
-}
-
-.v-leave-to {
-  transform: translateX(-900px) translateY(-340px);
-  transition: all 700ms linear;
-  opacity: 0;
 }
 </style>

@@ -16,6 +16,11 @@ const router = createRouter({
           name: "matches",
           component: () => import("@/views/pages/mydate-matches.vue"),
         },
+        {
+          path: "chat",
+          name: "chat",
+          component: () => import("@/views/pages/mydate-chat.vue"),
+        },
       ],
     },
     {
